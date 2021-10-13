@@ -1,4 +1,4 @@
-package com.example.jpamain;
+package com.example.jpamain.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,22 +8,17 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class OrderItem {
+public class CategoryItem {
 
   @Id
   @GeneratedValue
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "order_id")
-  private Order order;
+  @JoinColumn(name = "category_id")
+  private Category category;
 
   @ManyToOne
   @JoinColumn(name = "item_id")
   private Item item;
-
-  private Integer orderPrice;
-
-  private Integer count;
-
 }

@@ -1,4 +1,4 @@
-package com.example.jpamain;
+package com.example.jpamain.domain;
 
 import lombok.Getter;
 import lombok.Setter;
