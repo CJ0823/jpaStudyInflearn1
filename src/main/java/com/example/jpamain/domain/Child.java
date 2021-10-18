@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Member {
+public class Child {
 
   @Id
   @GeneratedValue
@@ -16,13 +16,7 @@ public class Member {
 
   private String name;
 
-  private String city;
-
-  private String street;
-
-  private Integer zipcode;
-
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "TEAM_ID")
-  private Team team;
+  @ManyToOne
+  @JoinColumn(name = "parent_id")
+  private Parent parent;
 }
