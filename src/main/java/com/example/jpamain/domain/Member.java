@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,11 +21,27 @@ public class Member {
 
   private String name;
 
-  private String city;
+  @Embedded
+  private Period period;
 
-  private String street;
+  @Embedded
+  private Address homeAddress;
 
-  private Integer zipcode;
+  @ElementCollection
+  @CollectionTable(name = "FAVORITE_FOODS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+  @Column(name = "FOOD_NAME") //String이 기본 값 타입이므로 컬럼 이름 적용 가능
+  private Set<String> favoriteFoods = new HashSet<>();
+
+  @ElementCollection
+  @CollectionTable(name = "ADDRESS_HISTORY", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+  private List<Address> addressHistory = new ArrayList<>();
+
+  @Embedded
+  @AttributeOverrides({@AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+          @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET")),
+          @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE"))
+  })
+  private Address workAddress;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "TEAM_ID")

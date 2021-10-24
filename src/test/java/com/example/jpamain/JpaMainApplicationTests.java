@@ -24,4 +24,22 @@ class JpaMainApplicationTests {
     System.out.println("hs = " + hs);
   }
 
+  @Test
+  void value_object() {
+    int a = 10;
+    int b = a;
+
+    a = 20;
+    System.out.println("b = " + b); // b = 10
+  }
+
+  @Test
+  void value_object_wrapper() {
+    Integer a = Integer.valueOf(10);
+    Integer b = a;
+
+    a = Integer.valueOf(20);
+    System.out.println("a = " + a);
+    System.out.println("b = " + b); // b = 10
+  }
 }
