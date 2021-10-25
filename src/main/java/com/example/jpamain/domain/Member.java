@@ -21,6 +21,8 @@ public class Member {
 
   private String name;
 
+  private Integer age;
+
   @Embedded
   private Period period;
 
@@ -46,4 +48,20 @@ public class Member {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "TEAM_ID")
   private Team team;
+
+
+  @Override
+  public String toString() {
+    return "Member{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", age=" + age +
+//            ", period=" + period +
+//            ", homeAddress=" + homeAddress +
+//            ", favoriteFoods=" + favoriteFoods +
+//            ", addressHistory=" + addressHistory +
+//            ", workAddress=" + workAddress +
+//            ", team=" + team +
+            '}';
+  }
 }
