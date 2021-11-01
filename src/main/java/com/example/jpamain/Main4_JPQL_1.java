@@ -3,12 +3,14 @@ package com.example.jpamain;
 import com.example.jpamain.domain.Address;
 import com.example.jpamain.domain.Member;
 import com.example.jpamain.domain.MemberDTO;
+import com.example.jpamain.domain.Team;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,27 +26,39 @@ public class Main4_JPQL_1 {
     tx.begin();
 
     try {
-      List<Member> members = IntStream.range(0, 100).boxed().map(i -> {
-        Member member = new Member();
-        member.setName("member " + i);
-        member.setAge(i);
-        member.setHomeAddress(new Address("city1", "road1", 1234));
-        em.persist(member);
-        return member;
-      }).collect(Collectors.toList());
+      Team team1 = new Team();
+      team1.setName("teamA");
+      em.persist(team1);
+
+      Team team2 = new Team();
+      team2.setName("teamB");
+      em.persist(team2);
+
+      Member member1 = new Member();
+      member1.setName("member1");
+      member1.setAge(10);
+      member1.changeTeam(team1);
+      em.persist(member1);
+
+      Member member2 = new Member();
+      member2.setName("member2");
+      member2.setAge(11);
+      member2.changeTeam(team1);
+      em.persist(member2);
+
+      Member member3 = new Member();
+      member3.setName("member3");
+      member3.setAge(12);
+      member3.changeTeam(team2);
+      em.persist(member3);
 
       em.flush();
       em.clear();
 
-      List<Member> resultList = em.createQuery("select m from Member m order by m.age desc ", Member.class)
-              .setFirstResult(1)
-              .setMaxResults(10)
-              .getResultList();
+      int count = em.createQuery("update Member m set m.age = 30")
+              .executeUpdate();
 
-      System.out.println("resultList.size() = " + resultList.size());
-      for (Member member1 : resultList) {
-        System.out.println("member1 = " + member1);
-      }
+      System.out.println("count = " + count);
 
       tx.commit();
 

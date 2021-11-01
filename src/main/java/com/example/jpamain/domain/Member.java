@@ -2,6 +2,7 @@ package com.example.jpamain.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.name = :name"
+)
 @Getter
 @Setter
 public class Member {
@@ -45,7 +50,7 @@ public class Member {
   })
   private Address workAddress;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "TEAM_ID")
   private Team team;
 
@@ -63,5 +68,10 @@ public class Member {
 //            ", workAddress=" + workAddress +
 //            ", team=" + team +
             '}';
+  }
+
+  public void changeTeam(Team team) {
+    this.team = team;
+    team.getMembers().add(this);
   }
 }
